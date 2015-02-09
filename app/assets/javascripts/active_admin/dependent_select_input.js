@@ -23,7 +23,18 @@
             _this._bind($(this));
         });
         
-    }
+    };
+
+
+    DependentSelects.prototype.option = function(key, value) {
+        if ($.isPlainObject(key)) {
+            return this.options = $.extend(true, this.options, key);
+        } else if (key != null) {
+            return this.options[key];
+        } else {
+            return this.options[key] = value;
+        }
+    };
 
 
     DependentSelects.prototype._buildChildInput = function(collection) {
@@ -51,6 +62,13 @@
 
         $selectInput.change(function() {
             $selectInput.nextAll().remove();
+            
+            if ($selectInput.val() === "") {
+                $selectInput.removeAttr("name");
+                $selectInput.prev().attr("name", _this.options.inputName);
+                return false;
+            }    
+                        
             $selectInput.prevAll().removeAttr("name");
             $selectInput.attr("name", _this.options.inputName);
             
@@ -78,7 +96,10 @@
   $.widget.bridge('aaDependentSelects', ActiveAdmin.DependentSelects);
 
   $(function() {
-    return $('.dependent_select').aaDependentSelects();
-  });
+    $('.dependent_select').aaDependentSelects();
 
+    $(document).on('click', 'a.button.has_many_add', function() {
+        $('.dependent_select').aaDependentSelects();
+    });
+  });
 }).call(this);
