@@ -6,10 +6,11 @@ module ActiveAdmin
       #
       #
       def wrapper_html_options
-        super.tap do |options|
-          options[:label_attr] = label_method
-          options[:value_attr] = value_method
-          options[:prompt] = input_options[:prompt]
+        super.tap do |wrapper_options|
+          wrapper_options[:label_attr] = label_method
+          wrapper_options[:value_attr] = value_method
+          wrapper_options[:prompt] = input_options[:prompt]
+          wrapper_options[:url] = options[:url]
         end  
       end
       
